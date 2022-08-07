@@ -1,0 +1,89 @@
+<h1 align="center">Owner Page</h1>
+
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="ownerdesign.css">
+</head>
+
+<body>
+    <div class="menubar">
+        <a href="owner.php">Home</a>
+
+        <div class="menubar_content">
+            <a href="#">My personal Information</a>
+            <div class="menubar_subcontent">
+                <a href="ownerAboutMe.php">My details</a>
+                <a href="ownerChangePassword.php">Change my password</a>
+            </div>
+        </div>
+
+        <div class="menubar_content2">
+            <a href="#">Other user information</a>
+            <div class="menubar_subcontent2">
+                <a href="ownerShowAllCustomer.php">Show all customer</a>
+                <a href="ownerShowAllDriver.php">Show all driver</a>
+                <a href="ownerShowAllOnwer.php">Show all owner</a>
+            </div>
+        </div>
+
+        <div class="menubar_content3">
+            <a href="#">All car information</a>
+            <div class="menubar_subcontent3">
+                <a href="ownerShowAllCar.php">Show all car</a>
+                <a href="ownerAddCar.php">Add car</a>
+                <a href="ownerEditCar.php">Edit any car</a>
+            </div>
+        </div>
+
+        <a href="login.php">Logout</a>
+    </div>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</body>
+
+
+
+
+<?php
+session_start();
+echo "<h3 align='right' style='color:green;'>login as (" . $_SESSION['user'] . ") </h3>";
+?>
+
+<table align="center">
+<td>
+            <img src="3owner.PNG" alt="" height=200 width=300 />
+        </td><br>
+</table>
+
+<head>
+	<style>
+		.dataTable {
+			/*background-color:#989599;*/
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	</style>
+</head>
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "vehicle_rental_application";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+	die("Connection not found:" . $conn->connect_error);
+} else {
+	$q = "SELECT * from all_car";
+	$result = $conn->query($q);
+	$output = '<br><br><br><table class="dataTable" border="1" width=100%><tr><th>Car name</th><th>Model</th><th>Per day rent</th><th>Contact No.</th></tr>';
+	if ($result->num_rows > 0) {
+		while ($row = $result->fetch_assoc()) {
+			$output .= "<tr><td>{$row["name"]}</td><td>{$row["model"]}</td><td>{$row["price"]}</td><td>{$row["phone"]}</td></tr>";
+		}
+		$output .= '</table>';
+	} else
+		echo "Not a single data found";
+}
+$conn->close();
+echo $output;
+?>
